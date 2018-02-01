@@ -1,52 +1,22 @@
-# Hello, world!
 #
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
+# Henry Samuelson 1/29/18
 #
-# You can learn more about package authoring with RStudio at:
+# A compact core for single-class classifcation, neural networks.
+# Built to better my understanding, and to provide a simple, well
+# commented neural network library for anyone to understand.
 #
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Build and Reload Package:  'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
+# *Muiltiple Hidden layers coming soon!*
 
-hello <- function() {
-  print("Hello, world!")
-}
-two_spirals <- function(N = 200,
-                        radians = 3*pi,
-                        theta0 = pi/2,
-                        labels = 0:1) {
-  N1 <- floor(N / 2)
-  N2 <- N - N1
-
-  theta <- theta0 + runif(N1) * radians
-  spiral1 <- cbind(-theta * cos(theta) + runif(N1),
-                   theta * sin(theta) + runif(N1))
-  spiral2 <- cbind(theta * cos(theta) + runif(N2),
-                   -theta * sin(theta) + runif(N2))
-
-  points <- rbind(spiral1, spiral2)
-  classes <- c(rep(0, N1), rep(1, N2))
-
-  data.frame(x1 = points[, 1],
-             x2 = points[, 2],
-             class = factor(classes, labels = labels))
-}
-set.seed(42)
 hotdogs <- two_spirals(labels = c('class 1', 'class 2'))
 
 
-library(ggplot2)
-theme_set(theme_classic())
-ggplot(hotdogs) +
-  aes(x1, x2, colour = class) +
-  geom_point() +
-  labs(x = expression(x[1]),
-       y = expression(x[2]))
+# library(ggplot2)
+# theme_set(theme_classic())
+# ggplot(hotdogs) +
+#   aes(x1, x2, colour = class) +
+#   geom_point() +
+#   labs(x = expression(x[1]),
+#        y = expression(x[2]))
 
 
 
@@ -70,13 +40,21 @@ backpropagate <- function(x, y, y_hat, w1, w2, h, learn_rate) {
   list(w1 = w1, w2 = w2)
 }
 
-train <- function(allData, columnId = 1, classification = 0,
-hidden = 5,
-learn_rate = 1e-2,
-iterations = 1e4) {
-  if(classification == 0){return("No Class spesified. ERROR")}
-  if(typeof(classification) != "charater"){return("Needs a charater value to continue")}
+train <- function(allData,
+                  columnId = 1,
+                  classification = 0,
+                  hidden = 5,
+                  learn_rate = 1e-2,
+                  iterations = 1e4) {
 
+  #Preliminary Checks
+  if(classification == 0){return("No Class spesified. ERROR")}
+  if(typeof(classification) != "character"){return("Needs a character value to continue")}
+
+  #Becasue this can only handle two class problems right now, we need to remove all rows that are not part of the
+  #binary system, here:
+
+  #ADD CODE TO FIX BAD SYSTEM
 
   #allow users to both input a column name or a column value for the column index
   #Then remove the one column of y from the rest of the data.
@@ -87,7 +65,7 @@ iterations = 1e4) {
     y <- allData[columnId,] == classification
     x <- allData[-columnId]
   }
-
+  x <- data.matrix(x)
   d <- length(x[1,]) + 1
   w1 <- matrix(rnorm(d * hidden), d, hidden) #Initilized randomized weights for first layer
 
@@ -102,15 +80,10 @@ iterations = 1e4) {
   }
   list(output = ff$output, w1 = w1, w2 = w2)
 }
-x <- data.matrix(hotdogs[, c('x1', 'x2')])
-y <- hotdogs$class == 'class 1'
 
 
 
 
-#nnet5 <- train(x, y, hidden = 5, iterations = 1e5)
-#mean((nnet5$output > .5) == y)
 
 
-#ggplot(hotdogs) + aes(x1, x2, colour = class) + geom_point(data = grid, size = .5) + geom_point() + labs(x = expression(x[1]), y = expression(x[2]))
 
