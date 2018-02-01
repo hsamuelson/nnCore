@@ -70,31 +70,47 @@ backpropagate <- function(x, y, y_hat, w1, w2, h, learn_rate) {
   list(w1 = w1, w2 = w2)
 }
 
-train <- function(x, y, hidden = 5, learn_rate = 1e-2, iterations = 1e4) {
+train <- function(allData, columnId = 1, classification = 0,
+hidden = 5,
+learn_rate = 1e-2,
+iterations = 1e4) {
+  if(classification == 0){return("No Class spesified. ERROR")}
+  if(typeof(classification) != "charater"){return("Needs a charater value to continue")}
+
+
+  #allow users to both input a column name or a column value for the column index
+  #Then remove the one column of y from the rest of the data.
+  if(typeof(columnId) == "character"){
+    y <- allData[columnId] == classification
+    x <- allData[ , -which(names(allData) %in% c(columnId))]
+  } else if(typeof(columnId) == "double"){
+    y <- allData[columnId,] == classification
+    x <- allData[-columnId]
+  }
+
   d <- length(x[1,]) + 1
-  w1 <- matrix(rnorm(d * hidden), d, hidden)
+  w1 <- matrix(rnorm(d * hidden), d, hidden) #Initilized randomized weights for first layer
+
   w2 <- as.matrix(rnorm(hidden + 1))
 
   #should change to a foreach? or would run into a recursive issue?
   for (i in 1:iterations) {
     ff <- feedforward(x, w1, w2)
-    bp <- backpropagate(x, y,
-                        y_hat = ff$output,
-                        w1, w2,
-                        h = ff$h,
-                        learn_rate = learn_rate)
-    w1 <- bp$w1; w2 <- bp$w2
+    bp <- backpropagate(x, y,y_hat = ff$output,w1, w2,h = ff$h,learn_rate = learn_rate)
+    w1 <- bp$w1
+    w2 <- bp$w2
   }
   list(output = ff$output, w1 = w1, w2 = w2)
 }
 x <- data.matrix(hotdogs[, c('x1', 'x2')])
-y <- hotdogs$class == 'hot dog'
-nnet5 <- train(x, y, hidden = 5, iterations = 1e5)
-mean((nnet5$output > .5) == y)
+y <- hotdogs$class == 'class 1'
 
 
-ggplot(hotdogs) + aes(x1, x2, colour = class) +
-  geom_point(data = grid, size = .5) +
-  geom_point() +
-  labs(x = expression(x[1]), y = expression(x[2]))
+
+
+#nnet5 <- train(x, y, hidden = 5, iterations = 1e5)
+#mean((nnet5$output > .5) == y)
+
+
+#ggplot(hotdogs) + aes(x1, x2, colour = class) + geom_point(data = grid, size = .5) + geom_point() + labs(x = expression(x[1]), y = expression(x[2]))
 
