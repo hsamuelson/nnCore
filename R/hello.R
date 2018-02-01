@@ -7,7 +7,7 @@
 #
 # *Muiltiple Hidden layers coming soon!*
 
-hotdogs <- two_spirals(labels = c('class 1', 'class 2'))
+
 
 
 # library(ggplot2)
@@ -23,7 +23,7 @@ hotdogs <- two_spirals(labels = c('class 1', 'class 2'))
 sigmoid <- function(x) {1 / (1 + exp(-x))}
 
 feedforward <- function(x, w1, w2) {
-  z1 <- cbind(1, x) %*% w1 #generate the x dot product of weights with values
+  z1 <- cbind(1, x) z%*% w1 #generate the x dot product of weights with values
   h <- sigmoid(z1)
   z2 <- cbind(1, h) %*% w2 #hidden layer generation
   list(output = sigmoid(z2), h = h)
