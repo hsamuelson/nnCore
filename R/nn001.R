@@ -69,7 +69,7 @@ train <- function(allData,
   d <- length(x[1,]) + 1
   w1 <- matrix(rnorm(d * hidden), d, hidden) #Initilized randomized weights for first layer
 
-  w2 <- as.matrix(rnorm(hidden + 1))
+  w2 <- as.matrix(rnorm(hidden + 1)) # second layer weights
 
   #should change to a foreach? or would run into a recursive issue?
   for (i in 1:iterations) {

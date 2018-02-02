@@ -4,6 +4,8 @@ NeuralNetwork <- R6Class("NeuralNetwork",
     X = NULL,  Y = NULL,
     W1 = NULL, W2 = NULL,
     output = NULL,
+    # initialize sets up the initial neuralnetwork structure, and generates
+    # weights etc.
     initialize = function(formula, hidden, data = list()) {
       # Model and training data
       mod <- model.frame(formula, data = data)
@@ -27,11 +29,15 @@ NeuralNetwork <- R6Class("NeuralNetwork",
       score <- cbind(1, h) %*% self$W2
       return(self$softmax(score))
     },
-
+    # runs func fit but saves the results for training.
+    # typically this is orginized backwards, but in order to not have to copy
+    # feedforward into fit it is setup this way
     feedforward = function(data = self$X) {
       self$output <- self$fit(data)
       invisible(self)
     },
+    # Standard backpropgate function
+    # saves the training results.
     backpropagate = function(lr = 1e-2) {
       h <- self$sigmoid(self$X %*% self$W1)
       Yid <- match(self$Y, sort(unique(self$Y)))
@@ -47,34 +53,46 @@ NeuralNetwork <- R6Class("NeuralNetwork",
 
       invisible(self)
     },
+    # uses argmax to estamte a single class for each observation. i.e. one
+    # test input
     predict = function(data = self$X) {
       probs <- self$fit(data)
       preds <- apply(probs, 1, which.max)
       levels(self$Y)[preds]
     },
+    # computes the loss used to report improvments in the neuralnet during training
+    # Can also be called through accuracy during prediction() tests
     compute_loss = function(probs = self$output) {
       Yid <- match(self$Y, sort(unique(self$Y)))
       correct_logprobs <- -log(probs[cbind(seq_along(Yid), Yid)])
       sum(correct_logprobs)
     },
+    # The main train function think of this as the main() function
+    # calls feedforward() and backpropogation() in the correct orders
     train = function(iterations = 1e4,
                      learn_rate = 1e-2,
                      tolerance = .01,
                      trace = 100) {
       for (i in seq_len(iterations)) {
         self$feedforward()$backpropagate(learn_rate)
-        if (trace > 0 && i %% trace == 0)
+        if (trace > 0 && i %% trace == 0){
           message('Iteration ', i, '\tLoss ', self$compute_loss(),
                   '\tAccuracy ', self$accuracy())
-        if (self$compute_loss() < tolerance) break
+        }
+        if (self$compute_loss() < tolerance){ #When the loss is under the tolerance stop training
+          break
+
+          }
       }
       invisible(self)
     },
+    # uses  compute_loss() function to determine the accuracy
     accuracy = function() {
       predictions <- apply(self$output, 1, which.max)
       predictions <- levels(self$Y)[predictions]
       mean(predictions == self$Y)
     },
+    # larger selection of activation functions to use
     sigmoid = function(x) 1 / (1 + exp(-x)),
     dsigmoid = function(x) x * (1 - x),
     softmax = function(x) exp(x) / rowSums(exp(x))
