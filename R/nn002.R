@@ -92,6 +92,9 @@ NeuralNetwork <- R6Class("NeuralNetwork",
       predictions <- levels(self$Y)[predictions]
       mean(predictions == self$Y)
     },
+    computeNN = function(data ) {
+      self$predict(data.matrix(cbind(1, data)))
+    },
     # larger selection of activation functions to use
     sigmoid = function(x) 1 / (1 + exp(-x)),
     dsigmoid = function(x) x * (1 - x),
