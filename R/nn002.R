@@ -1,9 +1,21 @@
+
+
 library(R6)
-NeuralNetwork <- R6Class("NeuralNetwork",
+nnCore <- R6Class("NeuralNetwork",
   public = list(
     X = NULL,  Y = NULL,
     W1 = NULL, W2 = NULL,
     output = NULL,
+    hiddenSelect = function(hidd){ #w will be Dat
+      if(hidd == "1"){
+        hiddenMode <- round(length(colnames(data)))
+      } else if(hidd == "2"){
+        hiddenMode <- round((round(length(colnames(data))) + 1)/(2/3))
+      } else if(hidd == "3"){
+        hiddenMode <- round(sqrt(length(colnames(data))*  length(data[,1]) ))
+      }
+      return(hiddenMode)
+    },
     # initialize sets up the initial neuralnetwork structure, and generates
     # weights etc.
     initialize = function(formula, hidden, data = list()) {
@@ -15,8 +27,11 @@ NeuralNetwork <- R6Class("NeuralNetwork",
       # Dimensions
       D <- ncol(self$X) # input dimensions (+ bias)
       K <- length(unique(self$Y)) # number of classes
-      H <- hidden # number of hidden nodes (- bias)
-
+      if(typeof(hidden) == "character"){
+        H <- self$hiddenSelect(hidden)
+      }else{
+        H <- hidden # number of hidden nodes (- bias)
+      }
       # Initial weights and bias
       self$W1 <- .01 * matrix(rnorm(D * H), D, H)
       self$W2 <- .01 * matrix(rnorm((H + 1) * K), H + 1, K)
@@ -76,8 +91,7 @@ NeuralNetwork <- R6Class("NeuralNetwork",
       for (i in seq_len(iterations)) {
         self$feedforward()$backpropagate(learn_rate)
         if (trace > 0 && i %% trace == 0){
-          message('Iteration ', i, '\tLoss ', self$compute_loss(),
-                  '\tAccuracy ', self$accuracy())
+          message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy())
         }
         if (self$compute_loss() < tolerance){ #When the loss is under the tolerance stop training
           break
@@ -92,6 +106,8 @@ NeuralNetwork <- R6Class("NeuralNetwork",
       predictions <- levels(self$Y)[predictions]
       mean(predictions == self$Y)
     },
+
+    # Creates a better interface for the user without interfering with the other uses of predict()
     computeNN = function(data ) {
       self$predict(data.matrix(cbind(1, data)))
     },
