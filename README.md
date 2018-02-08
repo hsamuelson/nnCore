@@ -25,7 +25,17 @@ The ```$``` syntax of the ```R6``` library allows for commands to be strung toge
 nn$train(9999, trace = 1e3, learn_rate = .0001)$predict(data.matrix(cbind(1, iris[,-5])))
 ````
 
-### Hidden Layer Modifications 
+### Hidden Layer Modifications
+You can either enter a specific number of hidden nodes or you can put one of three options in as a character, to create a generic number of nodes. This is valuable if you are generating neural networks within a program and do not have time to run a hyperparameters test. These three options have been defined as generic ways of determining an accurate number of hidden nodes. 
+Choose 1,2,3 to decide method for choosing # of hidden nodes.
 
+     “1”     # of hidden nodes = # of inputnodes 
+     “2”     # of hidden nodes = # of (# of input nodes + output nodes)/ (2/3)
+     “3”     # of hidden nodes =  sqrt(# of input nodes * # of attributes)
 
-
+#### Examples
+This will use option one, which will simply be the number of input nodes
+```
+nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
+```
+#### Muiltiple Hidden Layers
