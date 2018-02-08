@@ -20,7 +20,7 @@ nnCore <- R6Class("NeuralNetwork",
     # weights etc.
     initialize = function(formula, hidden, data = list()) {
       # Model and training data
-      mod <- model.frame(formula, data = data)
+      mod <- model.frame(formula, data = data) #This allows us to use the ~ sintax
       self$X <- model.matrix(attr(mod, 'terms'), data = mod)
       self$Y <- model.response(mod)
 
@@ -28,11 +28,11 @@ nnCore <- R6Class("NeuralNetwork",
       D <- ncol(self$X) # input dimensions (+ bias)
       K <- length(unique(self$Y)) # number of classes
       if(typeof(hidden) == "character"){
-        H <- self$hiddenSelect(hidden)
+        H <- self$hiddenSelect(hidden)  #This allows us to use predetermined hidden node options.
       }else{
         H <- hidden # number of hidden nodes (- bias)
       }
-      # Initial weights and bias
+      # Initial weights and bias for the two layers
       self$W1 <- .01 * matrix(rnorm(D * H), D, H)
       self$W2 <- .01 * matrix(rnorm((H + 1) * K), H + 1, K)
     },
@@ -91,7 +91,7 @@ nnCore <- R6Class("NeuralNetwork",
       for (i in seq_len(iterations)) {
         self$feedforward()$backpropagate(learn_rate)
         if (trace > 0 && i %% trace == 0){
-          message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy())
+          message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy()) #Print the accuracy and loss
         }
         if (self$compute_loss() < tolerance){ #When the loss is under the tolerance stop training
           break
