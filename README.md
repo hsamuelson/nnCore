@@ -25,6 +25,7 @@ The ```$``` syntax of the ```R6``` library allows for commands to be strung toge
 nn$train(9999, trace = 1e3, learn_rate = .0001)$predict(data.matrix(cbind(1, iris[,-5])))
 ````
 
+### Hidden Layer Modifications 
 
 
 
