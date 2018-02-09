@@ -124,6 +124,13 @@ nnCore <- R6Class("NeuralNetwork",
     computeNN = function(data ) {
       self$predict(data.matrix(cbind(1, data)))
     },
+    nnCoreAccuracy = function(data, columnName) {
+      nnAccuracy <- nnCore$new(paste0(columnName, "~."), data = data[1:round(length(data[,1])*.8),], hidden = "1")
+      nnAccuracy$train(9999, trace = 1e3, learn_rate = .0001)
+      data2 <- data[ , !(names(data) %in% columnName)]
+      guesses <- nnAccuracy$computeNN(data2[length(data2[,1]*.8):length(data2[,1]),])
+      mean(guesses == data[columnName])
+    },
     # larger selection of activation functions to use
     sigmoid = function(x) 1 / (1 + exp(-x)),
     dsigmoid = function(x) x * (1 - x),
