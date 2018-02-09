@@ -1,4 +1,17 @@
-
+#' nnCore
+#'
+#' A Light Weight Deep Learning Core in R
+#' This library was built to have a simple yet comprehensive neural
+#' network library that is well commented. This library was built to
+#' be light weight in comparison to most bloated neuralnet libraries.
+#' @name nnCore
+#' @param nnCore$new(Species ~ ., data = iris, hidden = 6)
+#' @keywords neuralnetwork, nnCore
+#' @export
+#' @examples
+#' nn <- nnCore$new(Species ~ ., data = iris, hidden = 6)
+#' nn$train(9999, trace = 1e3, learn_rate = .0001)
+#' nn$computeNN(iris[,-5])
 
 library(R6)
 nnCore <- R6Class("NeuralNetwork",
