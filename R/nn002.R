@@ -124,6 +124,10 @@ nnCore <- R6Class("NeuralNetwork",
     computeNN = function(data ) {
       self$predict(data.matrix(cbind(1, data)))
     },
+    # This function tests and runs a test final accuracy by testing with new data
+    # This funciton only uses 80% of the data to train and 20% to test, but in the real algorithm you train
+    # it will use 100% of the training data you give it. This insures that with your data you can get the best
+    # algorithumn possible.
     nnCoreAccuracy = function(data, columnName) {
       nnAccuracy <- nnCore$new(paste0(columnName, "~."), data = data[1:round(length(data[,1])*.8),], hidden = "1")
       nnAccuracy$train(9999, trace = 1e3, learn_rate = .0001)

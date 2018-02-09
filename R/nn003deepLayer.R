@@ -14,7 +14,7 @@
 #' nn$computeNN(iris[,-5])
 
 library(R6)
-nnCore <- R6Class("NeuralNetwork",
+nnLayers <- R6Class("NeuralNetwork",
                   public = list(
                     X = NULL,  Y = NULL,
                     W1 = NULL, W2 = NULL,
