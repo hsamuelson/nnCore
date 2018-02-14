@@ -132,7 +132,7 @@ nnCore <- R6Class("NeuralNetwork",
       nnAccuracy <- nnCore$new(paste0(columnName, "~."), data = data[1:round(length(data[,1])*.8),], hidden = "1")
       nnAccuracy$train(9999, trace = 1e3, learn_rate = .0001)
       data2 <- data[ , !(names(data) %in% columnName)]
-      guesses <- nnAccuracy$computeNN(data2[length(data2[,1]*.8):length(data2[,1]),])
+      guesses <- nnAccuracy$computeNN(data2[length(round(data2[,1]*.8)):length(data2[,1]),])
       mean(guesses == data[columnName])
     },
     # larger selection of activation functions to use
