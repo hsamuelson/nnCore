@@ -39,6 +39,8 @@ nnCore <- R6Class("NeuralNetwork",
 
       # Dimensions
       D <- ncol(self$X) # input dimensions (+ bias)
+
+      # number of categories for classification
       K <- length(unique(self$Y)) # number of classes
       if(typeof(hidden) == "character"){
         H <- self$hiddenSelect(hidden)  #This allows us to use predetermined hidden node options.

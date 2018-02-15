@@ -17,7 +17,7 @@ library(R6)
 nnLayers <- R6Class("NeuralNetwork",
                   public = list(
                     X = NULL,  Y = NULL,
-                    W1 = NULL, W2 = NULL,
+                    W1 = NULL, W2 = NULL, w3 = NULL,
                     output = NULL,
                     hiddenSelect = function(hidd){ #w will be Dat
                       if(hidd == "1"){
