@@ -17,8 +17,8 @@ library(R6)
 nnLayers <- R6Class("NeuralNetwork",
                   public = list(
                     X = NULL,  Y = NULL,
-                    W1 = NULL, W2 = NULL, w3 = NULL,
-                    output = NULL,
+                    W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
+                    output = NULL, accuracyTime = numeric(),
                     hiddenSelect = function(hidd){ #w will be Dat
                       if(hidd == "1"){
                         hiddenMode <- round(length(colnames(data)))
@@ -48,12 +48,17 @@ nnLayers <- R6Class("NeuralNetwork",
                       # Initial weights and bias for the two layers
                       self$W1 <- .01 * matrix(rnorm(D * H), D, H)
                       self$W2 <- .01 * matrix(rnorm((H + 1) * K), H + 1, K)
+
+                      # Create starting bias weights
+                      self$b1 <- matrix(0,nrow = 1, ncol = H)
+                      self$b2 <- matrix(0, nrow = 1, ncol = K)
                     },
 
-                    #Fit runs one step of bpropogation but returns the result, instead of storing it,
-                    #used for predicting new test data.
+                    # Fit runs one step of bpropogation but returns the result, instead of storing it,
+                    # used for predicting new test data.
                     fit = function(data = self$X) {
-                      h <- self$sigmoid(data %*% self$W1)
+                      #h <- self$sigmoid(data %*% (self$W1+self$b1))
+                      h <- self$sigmoid(sweep(data %*% self$W1 ,2, self$b1, '+'))
                       score <- cbind(1, h) %*% self$W2
                       return(self$softmax(score))
                     },
@@ -67,17 +72,24 @@ nnLayers <- R6Class("NeuralNetwork",
                     # Standard backpropgate function
                     # saves the training results.
                     backpropagate = function(lr = 1e-2) {
-                      h <- self$sigmoid(self$X %*% self$W1)
+                      h <- self$sigmoid(sweep(self$X %*% self$W1, 2, self$b1, '+'))
                       Yid <- match(self$Y, sort(unique(self$Y)))
 
                       haty_y <- self$output - (col(self$output) == Yid) # E[y] - y
                       dW2 <- t(cbind(1, h)) %*% haty_y
 
-                      dh <- haty_y %*% t(self$W2[-1, , drop = FALSE])
+                      dh <- haty_y %*% t(self$W2[-1, , drop = FALSE]) #y-hat =dscores
                       dW1 <- t(self$X) %*% (self$dsigmoid(h) * dh)
 
+                      db1 <- colSums((self$dsigmoid(h) * dh))
+                      db2 <- colSums(haty_y)
+                      # Update Weights
                       self$W1 <- self$W1 - lr * dW1
                       self$W2 <- self$W2 - lr * dW2
+
+                      # Update Biases
+                      self$b1 <- self$b1 - lr * db1
+                      self$b2 <- self$b2 - lr * db2
 
                       invisible(self)
                     },
@@ -103,6 +115,7 @@ nnLayers <- R6Class("NeuralNetwork",
                                      trace = 100) {
                       for (i in seq_len(iterations)) {
                         self$feedforward()$backpropagate(learn_rate)
+                        self$accuracyTime[i] <- self$accuracy()   #Recording the points every iteration is to slow!
                         if (trace > 0 && i %% trace == 0){
                           message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy()) #Print the accuracy and loss
                         }
@@ -112,6 +125,7 @@ nnLayers <- R6Class("NeuralNetwork",
                         }
                       }
                       invisible(self)
+                      plot(nn$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
                     },
                     # uses  compute_loss() function to determine the accuracy
                     accuracy = function() {
