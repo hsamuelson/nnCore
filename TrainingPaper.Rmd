@@ -2,7 +2,9 @@
 title: "Effects on Training Accuracy"
 author: "Henry Samuelson"
 date: "February 14, 2018"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,10 +15,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, echo=FALSE}
 library(nnCore)
 nn1 <- nnCore$new(Species ~ ., data = iris, hidden = 6)
-nn1$train(9999, trace = 1e3, learn_rate = .0001)
+invisible(nn1$train(9999, trace = 1e3, learn_rate = .0001))
 
 nn2 <- nnLayers$new(Species ~ ., data = iris, hidden = 6)
-nn2$train(9999, trace = 1e3, learn_rate = .0001)
+invisible(nn2$train(9999, trace = 1e3, learn_rate = .0001))
 
 nn3 <- nnLayers$new(Species ~ ., data = iris, hidden = 8)
 nn3$train(9999, trace = 1e3, learn_rate = .0001)
