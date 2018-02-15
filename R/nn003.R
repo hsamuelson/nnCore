@@ -126,7 +126,6 @@ nnLayers <- R6Class("NeuralNetwork",
                         }
                       }
                       invisible(self)
-                      plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
                     },
                     # uses  compute_loss() function to determine the accuracy
                     accuracy = function() {
@@ -138,6 +137,10 @@ nnLayers <- R6Class("NeuralNetwork",
                     # Creates a better interface for the user without interfering with the other uses of predict()
                     computeNN = function(data ) {
                       self$predict(data.matrix(cbind(1, data)))
+                    },
+                    plotNN = function(){
+                      plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
+
                     },
                     # larger selection of activation functions to use
                     sigmoid = function(x) 1 / (1 + exp(-x)),
