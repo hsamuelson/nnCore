@@ -18,7 +18,7 @@ nnLayers <- R6Class("NeuralNetwork",
                   public = list(
                     X = NULL,  Y = NULL,
                     W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
-                    output = NULL, accuracyTime = numeric(),
+                    output = NULL, accuracyTime = numeric(), lossTime = numeric(),
                     hiddenSelect = function(hidd){ #w will be Dat
                       if(hidd == "1"){
                         hiddenMode <- round(length(colnames(data)))
@@ -116,6 +116,7 @@ nnLayers <- R6Class("NeuralNetwork",
                       for (i in seq_len(iterations)) {
                         self$feedforward()$backpropagate(learn_rate)
                         self$accuracyTime[i] <- self$accuracy()   #Recording the points every iteration is to slow!
+                        self$lossTime[i] <- self$compute_loss()/100
                         if (trace > 0 && i %% trace == 0){
                           message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy()) #Print the accuracy and loss
                         }
@@ -125,7 +126,7 @@ nnLayers <- R6Class("NeuralNetwork",
                         }
                       }
                       invisible(self)
-                      plot(nn$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
+                      plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
                     },
                     # uses  compute_loss() function to determine the accuracy
                     accuracy = function() {

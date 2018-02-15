@@ -116,7 +116,7 @@ nnCore <- R6Class("NeuralNetwork",
           }
       }
       invisible(self)
-      plot(nn$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "red")
+      plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "red")
 
     },
     # uses  compute_loss() function to determine the accuracy
