@@ -6,9 +6,9 @@ This library was built to have a simple yet comprehensive neural network library
 
 ### Creating a new Network
 ```
-nn <- nnCore$new(Species ~ ., data = iris, hidden = 6)
+nn <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
 ```
-For the formula ```Species~.``` Means that column named “Species” Correlates to ```.``` which means the reaming columns in the data set. If you do not want to include all columns in the data set you can name the specific columns separated with “+”s. ```Species ~ Sepal.Length+Sepal.Width```.
+For the formula ```Species~.``` Means that column named “Species” Correlates to ```.``` which means the reaming columns in the data set. If you do not want to include all columns in the data set you can name the specific columns separated with “+”s. ```Species ~ Sepal.Length+Sepal.Width```. There are two versions of nnCore, ```nnCoreV1``` and ```nnCoreV2```. nnCoreV1 is stable and well tested, whereas nnCoreV2 is a development, version where the accuracy will often be higher but may not work in every situtation.
 ### Training A Network
 ```
 nn$train(9999, trace = 1e3, learn_rate = .0001)
