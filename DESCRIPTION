@@ -8,3 +8,4 @@ Description: This library was built to have a simple yet comprehensive neural ne
 License: MIT 
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
