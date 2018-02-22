@@ -42,7 +42,7 @@ library(roxygen2)
 #'nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 
 library(R6)
-nnCore <- R6Class("NeuralNetwork",
+nnCoreV1 <- R6Class("NeuralNetwork",
   public = list(
     X = NULL,  Y = NULL,
     W1 = NULL, W2 = NULL,

@@ -41,7 +41,7 @@
 #'nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 
 library(R6)
-nnLayers <- R6Class("NeuralNetwork",
+nnCoreV2 <- R6Class("NeuralNetwork",
                   public = list(
                     X = NULL,  Y = NULL,
                     W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
