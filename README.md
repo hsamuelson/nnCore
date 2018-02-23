@@ -15,7 +15,7 @@ nn$train(9999, trace = 1e3, learn_rate = .0001)
 ```
 9999 is the number of training iterations. Default the number of iterations is set to ```1e4``` or the default tolerance threshold which is ```0.01``` if the threshold is achived before the set number of iterations is passed.
 ### Plotting Learning Rates
-To plot the accuracy of your neuralnetwork overtime is simple. Use ``` nn$plotNN()``` to plot the accuracy, in training. To compare two neural nets training accuracy, one can use ```compareNN(NN1, NN2)``` to overlaying plots. This function is important for optimization of neural nets because it allows one to compare training efficiency to previous versions after making changes.
+To plot the accuracy of your neuralnetwork overtime is simple. For any of this to work, one must first set the ```plotData``` parameter to ```T```. This will slow down the training process slightly but will record the accuracy and loss while training. Use ``` nn$plotNN()``` to plot the accuracy, in training. To compare two neural nets training accuracy, one can use ```compareNN(NN1, NN2)``` to overlaying plots. This function is important for optimization of neural nets because it allows one to compare training efficiency to previous versions after making changes.
 
 ### Compute New Observations
 ```
