@@ -46,7 +46,11 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                     X = NULL,  Y = NULL,
                     W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
                     output = NULL, accuracyTime = numeric(), lossTime = numeric(),
-                    hiddenSelect = function(hidd){ #w will be Dat
+                    plotData = F,
+
+                    # hiddenSelect allows one to pick a generic method of determining the number of hidden nodes
+                    # these functions are helpful if one has automated the building of neuralnets.
+                    hiddenSelect = function(hidd){
                       if(hidd == "1"){
                         hiddenMode <- round(length(colnames(data)))
                       } else if(hidd == "2"){
@@ -142,11 +146,19 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                                      trace = 100) {
                       for (i in seq_len(iterations)) {
                         self$feedforward()$backpropagate(learn_rate)
-                        self$accuracyTime[i] <- self$accuracy()   #Recording the points every iteration is to slow!
-                        self$lossTime[i] <- self$compute_loss()/100
-                        if (trace > 0 && i %% trace == 0){
-                          message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy()) #Print the accuracy and loss
+
+                        # Default V2 will not record accuracy every step, becasue it slows down the training.
+                        # To record every step change the plotData parameter upon initilization.
+                        if(plotData == T){
+                          self$accuracyTime[i] <- self$accuracy()   #Recording the points every iteration is to slow!
+                          self$lossTime[i] <- self$compute_loss()/100
                         }
+
+                        if (trace > 0 && i %% trace == 0){
+                          #Print the accuracy and loss
+                          message('Iteration ', i, '\tLoss ', self$compute_loss(),'\tAccuracy ', self$accuracy())
+                        }
+
                         if (self$compute_loss() < tolerance){ #When the loss is under the tolerance stop training
                           break
 
@@ -165,6 +177,8 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                     computeNN = function(data ) {
                       self$predict(data.matrix(cbind(1, data)))
                     },
+                    # Plots the neuralnets training accuracy. IMPORTANT: If you do not have the plotData param set to
+                    # true this funciton will not work.
                     plotNN = function(){
                       plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
 
