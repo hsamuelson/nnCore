@@ -147,8 +147,7 @@ nnCoreV1 <- R6Class("NeuralNetwork",
 
 
     },
-    # Plots the neuralnets training accuracy. IMPORTANT: If you do not have the plotData param set to
-    # true this funciton will not work.
+    # will plot the training accuracy
     plotNN = function(){
       plot(self$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
 

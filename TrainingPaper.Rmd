@@ -1,5 +1,5 @@
 ---
-title: "Effects on Training Accuracy"
+title: "nnCoreV1 V.S. nnCoreV2"
 author: "Henry Samuelson"
 date: "February 14, 2018"
 output:
@@ -11,26 +11,41 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## A NN with bias v.s. one without adding bias
-```{r, echo=FALSE}
+## Iris Dataset
+```{r}
 library(nnCore)
-nn1 <- nnCore$new(Species ~ ., data = iris, hidden = 6)
-invisible(nn1$train(9999, trace = 1e3, learn_rate = .0001))
+# Iris
+irisNN1 <- nnCoreV1$new(Species ~ ., data = iris, hidden = 6)
+suppressMessages(irisNN1$train(9999, trace = 1e3, learn_rate = .0001))
 
-nn2 <- nnLayers$new(Species ~ ., data = iris, hidden = 6)
-invisible(nn2$train(9999, trace = 1e3, learn_rate = .0001))
+irisNN2 <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
+suppressMessages(irisNN2$train(9999, trace = 1e3, learn_rate = .0001))
+compareNN(irisNN1, irisNN2)
+```
 
-nn3 <- nnLayers$new(Species ~ ., data = iris, hidden = 8)
-nn3$train(9999, trace = 1e3, learn_rate = .0001)
+## Infert Dataset
+```{r}
+# infertility
+infertNN1 <- nnCoreV1$new(education ~ ., data= infert, hidden = 6)
+suppressMessages(infertNN1$train(4000, trace = 1e3, learn_rate = .0001))
 
-compareNN <- function(nn1, nn2){
-  plot(nn1$accuracyTime, xlab = "Iterations", ylab = "Accuracy", type = "o", pch =20, col= "blue")
-  points(nn2$accuracyTime, col="red", pch=20, type = "o")
-  legend("bottomright",
-         legend = c("NN1", "NN2"),
-         col = c("red", "blue"),
-         pch = 20,
-         inset = c(0.1, 0.1))
-}
-compareNN(nn1, nn2)
+infertNN2 <- nnCoreV2$new(education ~ ., data= infert, hidden = 6, plotData = T)
+suppressMessages(infertNN2$train(4000, trace = 1e3, learn_rate = .0001))
+compareNN(infertNN1, infertNN2)
+
+
+```
+
+## Higgs Boson Prediction
+```{r}
+# Higgs Boson Predciton
+higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
+higgsDat <- higgsDat[,-1]
+
+higgsNN1 <- nnCoreV1$new(Label ~ ., data= higgsDat[1:150,], hidden = 30)
+suppressMessages(higgsNN1$train(9999, trace = 1e3, learn_rate = .0001))
+
+higgsNN2 <- nnCoreV2$new(Label ~ ., data= higgsDat[1:150,], hidden = 30, plotData = T)
+suppressMessages(higgsNN2$train(9999, trace = 1e3, learn_rate = .0001))
+compareNN(higgsNN1, higgsNN2)
 ```
