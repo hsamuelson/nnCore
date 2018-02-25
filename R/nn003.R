@@ -46,7 +46,7 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                     X = NULL,  Y = NULL,
                     W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
                     output = NULL, accuracyTime = numeric(), lossTime = numeric(),
-                    plotData = F,
+                    plotData2 = F,
 
                     # hiddenSelect allows one to pick a generic method of determining the number of hidden nodes
                     # these functions are helpful if one has automated the building of neuralnets.
@@ -62,7 +62,8 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                     },
                     # initialize sets up the initial neuralnetwork structure, and generates
                     # weights etc.
-                    initialize = function(formula, hidden, data = list()) {
+                    initialize = function(formula, hidden, data = list(), plotData = F) {
+                      self$plotData2 <- plotData
                       # Model and training data
                       mod <- model.frame(formula, data = data) #This allows us to use the ~ sintax
                       self$X <- model.matrix(attr(mod, 'terms'), data = mod)
@@ -149,7 +150,7 @@ nnCoreV2 <- R6Class("NeuralNetwork",
 
                         # Default V2 will not record accuracy every step, becasue it slows down the training.
                         # To record every step change the plotData parameter upon initilization.
-                        if(plotData == T){
+                        if(self$plotData2 == T){
                           self$accuracyTime[i] <- self$accuracy()   #Recording the points every iteration is to slow!
                           self$lossTime[i] <- self$compute_loss()/100
                         }
