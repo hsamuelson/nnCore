@@ -18,7 +18,7 @@ library(nnCore)
 irisNN1 <- nnCoreV1$new(Species ~ ., data = iris, hidden = 6)
 suppressMessages(irisNN1$train(9999, trace = 1e3, learn_rate = .0001))
 
-irisNN2 <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
+irisNN2 <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6, plotData = T)
 suppressMessages(irisNN2$train(9999, trace = 1e3, learn_rate = .0001))
 compareNN(irisNN1, irisNN2)
 ```

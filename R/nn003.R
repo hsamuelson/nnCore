@@ -104,6 +104,7 @@ nnCoreV2 <- R6Class("NeuralNetwork",
                     # Standard backpropgate function
                     # saves the training results.
                     backpropagate = function(lr = 1e-2) {
+
                       h <- self$sigmoid(sweep(self$X %*% self$W1, 2, self$b1, '+'))
                       Yid <- match(self$Y, sort(unique(self$Y)))
 
