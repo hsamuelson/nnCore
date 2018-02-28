@@ -41,4 +41,28 @@ This will use option one, which will simply be the number of input nodes
 ```
 nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 ```
-#### Muiltiple Hidden Layers
+### Function List
+#### $hiddenSelect()
+contains preset defaults for determining the number of hidden nodes.
+#### $new()
+sets up the initial neural network structure, and generates weights etc.
+#### $fit()
+runs one step of back propagation but returns the result, instead of storing it. It is used for predicting new test data.
+#### $feedforward()
+runs function ```$fit``` but saves the results for training. Typically, this is organized backwards, but in order to not have to copy feedforward into fit it is setup this way.
+#### $backpropagate()
+preforms generic backpropagation. 
+#### $predict()
+uses argmax to estimate a single class for each observation. i.e. one test input.
+#### $compute_loss()
+computes the loss is used to report improvements in the neural net during training. It can also be called through accuracy during prediction() tests.
+#### $train()
+takes user input for training neural net. This is discussed in the training section. 
+#### $accuracy()
+uses  ```compute_loss()``` function to determine the accuracy.
+#### $computeNN()
+Creates a better interface for the user without interfering with the other uses of ```predict()```.
+#### $plotNN()
+takes user input and is discussed in the plotting section.
+
+
