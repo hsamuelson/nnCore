@@ -11,7 +11,7 @@ install.packages("roxygen2")
 ```
 
 Then install the package from github
-```install_github("nnCore")```
+```install_github("hsamuelson/nnCore")```
 ### Creating a new Network
 ```
 nn <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
