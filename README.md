@@ -16,7 +16,7 @@ Then install the package from github
 ```
 nn <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
 ```
-For the formula ```Species~.``` Means that column named “Species” Correlates to ```.``` which means the reaming columns in the data set. If you do not want to include all columns in the data set you can name the specific columns separated with “+”s. ```Species ~ Sepal.Length+Sepal.Width```. There are two versions of nnCore, ```nnCoreV1``` and ```nnCoreV2```. nnCoreV1 is stable and well tested, whereas nnCoreV2 is a development, version where the accuracy will often be higher but may not work in every situtation.
+Using standard R notation for formulas, the formula ```Species~.``` means that the algorithm should analyze the correlation between  the column named “Species” and “.” which means the remaining columns in the data set.If you do not want to include all columns in the data set you can name the specific columns separated with “+”s. ```Species ~ Sepal.Length+Sepal.Width```. There are two versions of nnCore, ```nnCoreV1``` and ```nnCoreV2```. nnCoreV1 is stable and well tested, whereas nnCoreV2 is a development, version where the accuracy will often be higher but may not work in every situtation.
 ### Training A Network
 ```
 nn$train(9999, trace = 1e3, learn_rate = .0001)
