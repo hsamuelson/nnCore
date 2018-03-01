@@ -2,9 +2,9 @@
 A Light Weight Deep Learning Core in R
 
 ## Description
-This library was built to have a simple yet comprehensive neural network library that is well commented. This library was built to be light weight in comparison to most bloated neuralnet libraries.
+This library was built to have a simple yet comprehensive neural network library that is well commented. This library was built to be light weight in comparison to most full-featured neuralnet libraries.
 ### Installation 
-First install devtools
+First install devtools. Then install roxygen2 which is used to compile documentation for the library. 
 ```
 install.packages("devtools")
 install.packages("roxygen2")
@@ -49,6 +49,9 @@ This will use option one, which will simply be the number of input nodes
 ```
 nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 ```
+### How It Works 
+For an indepth approach to how this library was built please read:
+
 ### Function List
 #### $hiddenSelect()
 contains preset defaults for determining the number of hidden nodes.
