@@ -31,29 +31,29 @@ compareNN <- function(nn1, nn2){
           inset = c(0.1, 0.1))
  }
 
-# Iris
-irisNN1 <- nnCoreV1$new(Species ~ ., data = iris, hidden = 6)
-irisNN1$train(9999, trace = 1e3, learn_rate = .0001)
-
-irisNN2 <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
-irisNN2$train(9999, trace = 1e3, learn_rate = .0001)
-compareNN(irisNN1, irisNN2)
-# infertility
-infertNN1 <- nnCoreV1$new(education ~ ., data= infert, hidden = 6)
-infertNN1$train(4000, trace = 1e3, learn_rate = .0001)
-
-infertNN2 <- nnCoreV2$new(education ~ ., data= infert, hidden = 6, plotData = T)
-infertNN2$train(4000, trace = 1e3, learn_rate = .0001)
-compareNN(infertNN1, infertNN2)
-
-
-# Higgs Boson Predciton
-higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
-higgsDat <- higgsDat[,-1]
-
-higgsNN1 <- nnCoreV1$new(Label ~ ., data= higgsDat[1:150,], hidden = 30)
-higgsNN1$train(9999, trace = 1e3, learn_rate = .0001)
-
-higgsNN2 <- nnCoreV2$new(Label ~ ., data= higgsDat[1:150,], hidden = 30, plotData = T)
-higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
-compareNN(higgsNN1, higgsNN2)
+# # Iris
+# irisNN1 <- nnCoreV1$new(Species ~ ., data = iris, hidden = 6)
+# irisNN1$train(9999, trace = 1e3, learn_rate = .0001)
+#
+# irisNN2 <- nnCoreV2$new(Species ~ ., data = iris, hidden = 6)
+# irisNN2$train(9999, trace = 1e3, learn_rate = .0001)
+# compareNN(irisNN1, irisNN2)
+# # infertility
+# infertNN1 <- nnCoreV1$new(education ~ ., data= infert, hidden = 6)
+# infertNN1$train(4000, trace = 1e3, learn_rate = .0001)
+#
+# infertNN2 <- nnCoreV2$new(education ~ ., data= infert, hidden = 6, plotData = T)
+# infertNN2$train(4000, trace = 1e3, learn_rate = .0001)
+# compareNN(infertNN1, infertNN2)
+#
+#
+# # Higgs Boson Predciton
+# higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
+# higgsDat <- higgsDat[,-1]
+#
+# higgsNN1 <- nnCoreV1$new(Label ~ ., data= higgsDat[1:150,], hidden = 30)
+# higgsNN1$train(9999, trace = 1e3, learn_rate = .0001)
+#
+# higgsNN2 <- nnCoreV2$new(Label ~ ., data= higgsDat[1:150,], hidden = 30, plotData = T)
+# higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
+# compareNN(higgsNN1, higgsNN2)
