@@ -5,7 +5,11 @@ A Light Weight Deep Learning Core in R
 This library was built to have a simple yet comprehensive neural network library that is well commented. This library was built to be light weight in comparison to most bloated neuralnet libraries.
 ### Installation 
 First install devtools
-```install.packages("devtools")```
+```
+install.packages("devtools")
+install.packages("roxygen2")
+```
+
 Then install the package from github
 ```install_github("nnCore")```
 ### Creating a new Network
