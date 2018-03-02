@@ -40,7 +40,8 @@ library(roxygen2)
 #'This will use option one, which will simply be the number of input nodes
 
 #'nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
-
+if (!require("R6")) install.packages("R6")
+if (!require("roxygen2")) install.packages("roxygen2")
 library(R6)
 nnCoreV1 <- R6Class("NeuralNetwork",
   public = list(

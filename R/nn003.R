@@ -40,6 +40,8 @@
 
 #'nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 
+if (!require("R6")) install.packages("R6")
+if (!require("roxygen2")) install.packages("roxygen2")
 library(R6)
 nnCoreV2 <- R6Class("NeuralNetwork",
                   public = list(
