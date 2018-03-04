@@ -51,7 +51,7 @@ nn <- nnCore$new(Species ~ ., data = iris, hidden = "1")
 ```
 ### How It Works 
 For an indepth approach to how this library was built please read:
-
+https://github.com/hsamuelson/nnCore/blob/master/keyconcepts.md
 ### Function List
 #### $hiddenSelect()
 contains preset defaults for determining the number of hidden nodes.
