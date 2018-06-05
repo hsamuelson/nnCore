@@ -30,6 +30,8 @@ higgsDat <- higgsDat[,-1]
 
 trainData <- higgsDat[1:150,]
 testData <- higgsDat[151:330,]
+refernceData <- higgsDat[500:700,]
+
 
 higgsNN2 <- nnCoreV3$new(Label ~ ., data= trainData, hidden = 30, plotData = T)
 higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
@@ -37,11 +39,16 @@ higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
 # By training will add on to var superScore but will be overwritten when an $predict() command is run.
 #
 
+# This is what will be comparied to benchmark progress throughout different input data
+mean(higgsNN2$predict(data.matrix(cbind(1, refernceData[,-32]))) == refernceData[,32]) #also important this is calculated first
+
 # This simutaniously generates the confiendece table called superScore
 predictedData <- higgsNN2$predict(data.matrix(cbind(1, testData[,-32])))
 score <-  predictedData == testData[,32]
 mean(score) #This will be the effective accuracy of the algorithm
 #~0.6625
+
+
 
 #higgsNN2$predict(data.matrix(cbind(1, testData[1:2,-32])))
 
@@ -58,3 +65,8 @@ confTable <- cbind(as.integer(names(highConfiedence)), as.numeric(highConfiedenc
 #
 #get predicted vals
 predictIndex <- confTable[,1] - 150 #This number should change
+Label <- predictedData[predictIndex] #This is important it is named what it was originally in the dataset
+newTruth <- cbind(testData[predictIndex,][,-32], as.data.frame(Label))
+
+#ammend newTruth to the trainingset
+trainData <- rbind(trainData, newTruth)
