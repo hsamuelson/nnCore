@@ -48,7 +48,7 @@ nnCoreV3 <- R6Class("NeuralNetwork",
                       X = NULL,  Y = NULL,
                       W1 = NULL, W2 = NULL, b1 = NULL, b2 = NULL,
                       output = NULL, accuracyTime = numeric(), lossTime = numeric(),
-                      plotData2 = F, superScore = 0, superCounter = 1,
+                      plotData2 = F, superScore = numeric(), superCounter = 1,
 
                       # hiddenSelect allows one to pick a generic method of determining the number of hidden nodes
                       # these functions are helpful if one has automated the building of neuralnets.
@@ -94,7 +94,7 @@ nnCoreV3 <- R6Class("NeuralNetwork",
                         #h <- self$sigmoid(data %*% (self$W1+self$b1))
                         h <- self$sigmoid(sweep(data %*% self$W1 ,2, self$b1, '+'))
                         score <- cbind(1, h) %*% self$W2
-                        self$superScore[self$superCounter,] <- self$softmax(score)
+                        self$superScore <- self$softmax(score)
                         self$superCounter = self$superCounter + 1
                         return(self$softmax(score))
 

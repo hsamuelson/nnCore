@@ -29,14 +29,32 @@ higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv"
 higgsDat <- higgsDat[,-1]
 
 trainData <- higgsDat[1:150,]
-testData <- higgsDat[151:230,]
+testData <- higgsDat[151:330,]
 
-higgsNN2 <- nnCoreV2$new(Label ~ ., data= trainData, hidden = 30, plotData = T)
+higgsNN2 <- nnCoreV3$new(Label ~ ., data= trainData, hidden = 30, plotData = T)
 higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
+#
+# By training will add on to var superScore but will be overwritten when an $predict() command is run.
+#
 
-
-score <- higgsNN2$predict(data.matrix(cbind(1, testData[,-32]))) == testData[,32]
+# This simutaniously generates the confiendece table called superScore
+predictedData <- higgsNN2$predict(data.matrix(cbind(1, testData[,-32])))
+score <-  predictedData == testData[,32]
 mean(score) #This will be the effective accuracy of the algorithm
-#0.6625
+#~0.6625
 
-higgsNN2$predict(data.matrix(cbind(1, testData[1,-32])))
+#higgsNN2$predict(data.matrix(cbind(1, testData[1:2,-32])))
+
+#Adapt confiedence table
+confiedenceList <- higgsNN2$superScore[,1]
+
+#THis includes both .9 and .1 bc the original list is double and one list is for y other for conf in n
+highConfiedence <- confiedenceList[unlist(confiedenceList > .9 | confiedenceList < .1)] #Only includes confiedences that are over .9
+
+#Creates table for of original index and confiedence c(i, .9)
+confTable <- cbind(as.integer(names(highConfiedence)), as.numeric(highConfiedence)) #these should now be added to the training set of truth.
+
+#add the indexes to training set, with the predicted vals
+#
+#get predicted vals
+predictIndex <- confTable[,1] - 150 #This number should change
