@@ -37,3 +37,6 @@ higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
 
 score <- higgsNN2$predict(data.matrix(cbind(1, testData[,-32]))) == testData[,32]
 mean(score) #This will be the effective accuracy of the algorithm
+#0.6625
+
+higgsNN2$predict(data.matrix(cbind(1, testData[1,-32])))
