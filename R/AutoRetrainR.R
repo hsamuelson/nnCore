@@ -7,17 +7,17 @@
 higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
 higgsDat <- higgsDat[,-1]
 
-higLowerBound <- 151
-higUpperBound <- 301
-trainData <- higgsDat[1:150,]
-testData <- higgsDat[higLowerBound:higUpperBound,]
-refernceData <- higgsDat[249800:250000,]
 
+higLowerBound <<- 151
+higUpperBound <<- 301
 #This switches around what the testData is so it is always new.
 datShifter <- function(){ #This function should be called after runResults() becasue it needs to take the first set of data
+  trainData <<- higgsDat[1:150,]
+  testData <<- higgsDat[higLowerBound:higUpperBound,]
+  refernceData <- higgsDat[249800:250000,]
   higLowerBound <<- higUpperBound + 1
   higUpperBound <<- higUpperBound + 151
-  testData <<- higgsDat[higLowerBound:higUpperBound,]
+
 }
 
 ## FUNCTIONS NOW

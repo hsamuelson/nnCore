@@ -23,13 +23,14 @@
 # #run tests
 # infertNN2$predict(data.matrix(cbind(1, test[,-1]))) == test[,1]
 
+testData <- higgsDat[151:330,]
 
 #Higgs Dataset
 higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
 higgsDat <- higgsDat[,-1]
-
+for(i in 1:20){
 trainData <- higgsDat[1:150,]
-testData <- higgsDat[151:330,]
+testData <- higgsDat[151+(i*151):330+(i*151),]
 refernceData <- higgsDat[500:700,]
 
 
@@ -40,16 +41,16 @@ higgsNN2$train(9999, trace = 1e3, learn_rate = .0001)
 #
 
 # This is what will be comparied to benchmark progress throughout different input data
-mean(higgsNN2$predict(data.matrix(cbind(1, refernceData[,-32]))) == refernceData[,32]) #also important this is calculated first
+refScore <- mean(higgsNN2$predict(data.matrix(cbind(1, refernceData[,-32]))) == refernceData[,32]) #also important this is calculated first
 
 # This simutaniously generates the confiendece table called superScore
 predictedData <- higgsNN2$predict(data.matrix(cbind(1, testData[,-32])))
 score <-  predictedData == testData[,32]
-mean(score) #This will be the effective accuracy of the algorithm
+#mean(score) #This will be the effective accuracy of the algorithm
 #~.59444
 #~.61666
 #~.61111
-
+print(refScore)
 
 
 #higgsNN2$predict(data.matrix(cbind(1, testData[1:2,-32])))
@@ -72,3 +73,4 @@ newTruth <- cbind(testData[predictIndex,][,-32], as.data.frame(Label))
 
 #ammend newTruth to the trainingset
 trainData <- rbind(trainData, newTruth)
+}
