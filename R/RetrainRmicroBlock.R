@@ -13,10 +13,11 @@ testData <- higgsDat[151:330,]
 #Higgs Dataset
 higgsDat <- read.csv("C:/Users/hsamuelson/Desktop/R/Higgs/training/training.csv")
 higgsDat <- higgsDat[,-1]
-for(i in 1:20){
-  i = 1
+refScoreList <- numeric()
+for(i in 1:30){
+  #i = 1
   trainData <- higgsDat[1:150,]
-  testData <- higgsDat[151+(i*151):330+(i*151),]
+  testData <- higgsDat[(i*151):(100+(i*151)),] #At this point testing 100 results gets us 10 results with >.9 confiedence
   refernceData <- higgsDat[249800:250000,]
 
 
@@ -37,6 +38,7 @@ for(i in 1:20){
   #~.61666
   #~.61111
   print(refScore)
+  refScoreList[i] <- refScore
 
 
 
@@ -54,7 +56,7 @@ for(i in 1:20){
   #add the indexes to training set, with the predicted vals
   #
   #get predicted vals
-  predictIndex <- confTable[,1] - 150 #This number should change
+  predictIndex <- confTable[,1] - as.numeric(names(confiedenceList)[1]) #This number should change
   Label <- predictedData[predictIndex] #This is important it is named what it was originally in the dataset
   newTruth <- cbind(testData[predictIndex,][,-32], as.data.frame(Label))
 
@@ -62,7 +64,7 @@ for(i in 1:20){
   # *THIS IS WHERE THIS IS DIFFERENT *
   # unlike retrainR instead of adding all the new truth we need to test every indivudal part.
   passingTruth <- list()
-
+  cat("Number of Tests will be: " , length(newTruth[,1]))
   for(j in 1:length(newTruth[,1])) {# for every item compute new accuracy
     tempTrain <- rbind(trainData, newTruth[j,])
     higgsNN3 <- nnCoreV3$new(Label ~ ., data= trainData, hidden = 30, plotData = T)
@@ -77,5 +79,6 @@ for(i in 1:20){
     }
   }
   #ammend newTruth to the trainingset
-  #trainData <- rbind(trainData, newTruth)
+  trainData <- rbind(trainData, passingTruth)
+  print("Updated Training SET!")
 }
