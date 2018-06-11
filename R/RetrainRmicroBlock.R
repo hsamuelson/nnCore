@@ -6,7 +6,7 @@
 # ** THIS IS UNFININSH AND STILL IN DEVELOPMENT **
 #
 
-
+#For desktop training file is located on desktop folder
 
 testData <- higgsDat[151:330,]
 
@@ -59,8 +59,8 @@ for(i in 1:20){
   #
   # *THIS IS WHERE THIS IS DIFFERENT *
   # unlike retrainR instead of adding all the new truth we need to test every indivudal part.
-  passingTruth <- numeric()
-  passingTruthCounter <- 1
+  passingTruth <- numeric(length(newTruth[1,]))
+
   for(j in 1:length(newTruth[,1])) {# for every item compute new accuracy
     tempTrain <- cbind(trainData, newTruth[j,])
     higgsNN3 <- nnCoreV3$new(Label ~ ., data= trainData, hidden = 30, plotData = T)
@@ -70,8 +70,8 @@ for(i in 1:20){
     refScorez <- mean(higgsNN3$predict(data.matrix(cbind(1, refernceData[,-32]))) == refernceData[,32])
     print(refScorez)
     if((refScorez - refScore) > 0.01){
-      passingTruth[passingTruthCounter] <- newTruth[j,]
-      passingTruthCounter = passingTruthCounter + 1
+      print("Key Data")
+      passingTruth <- rbind(passingTruth, newTruth[j,])
     }
   }
   #ammend newTruth to the trainingset
